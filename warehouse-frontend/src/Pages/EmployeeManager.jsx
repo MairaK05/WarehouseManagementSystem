@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import { listEmployees } from "./services/EmployeeService";
-import { addEmployee } from "./services/EmployeeService";
+import { api } from "./services/EmployeeService";
 const EmployeeManager = () => {
     const [employees, setEmployees] = useState([])
 
@@ -36,6 +36,7 @@ const EmployeeManager = () => {
                             <td>{emailAddress}</td>
                             <td>{phoneNumber}</td>
                             <td>{address}</td>
+                            <td><button onClick={() => handleDelete(employeeID)}>Delete Employee</button><button onClick={() => handleUpdate(employeeID)}>Update Employee</button></td>
                         </tr>
                     )
                 })}
@@ -53,25 +54,31 @@ const EmployeeManager = () => {
             phoneNumber: "",
             address: "",
         })
-        const { firstName, lastName, emailAddress, phoneNumber, address } = employee;
+        const { employeeID, firstName, lastName, emailAddress, phoneNumber, address } = employee;
         async function handleSubmit(e) { //Handle a new employee being submitted
             e.preventDefault();
-            alert("Employee Submitted");
-            await axios.post("/api/employees", employee);
+            console.log(employee);
+            await api.post("", JSON.stringify(employee)).then((response) => {
+                console.log(response);
+                return response;
+            })
+            .catch(error => {
+                console.error(error.response.data);
+            })
         }
 
         const onInputChange = (e) => {
-            setEmployee({...employee, [e.target.firstName]: e.target.value });
+            setEmployee({...employee, [e.target.name]: e.target.value}); 
         };
 
         return (
         <form onSubmit={handleSubmit} id="form">
-            <label>First Name<input type="text" onChange={(e) => onInputChange(e)}/></label>
-            <label>Last Name<input type="text" onChange={(e) => onInputChange(e)}/></label>
-            <label>Email Address<input type="text" onChange={(e) => onInputChange(e)}/></label>
-            <label>Phone Number<input type="text" onChange={(e) => onInputChange(e)}/></label>
-            <label>Address<input type="text" onChange={(e) => onInputChange(e)}/></label>
-            <input type="submit" className="counter" onChange={(e) => onInputChange(e)}/>
+            <label>First Name<input type="text" name="firstName" onChange={(e) => onInputChange(e)}/></label>
+            <label>Last Name<input type="text" name="lastName" onChange={(e) => onInputChange(e)}/></label>
+            <label>Email Address<input type="text" name="emailAddress" onChange={(e) => onInputChange(e)}/></label>
+            <label>Phone Number<input type="text" name="phoneNumber" onChange={(e) => onInputChange(e)}/></label>
+            <label>Address<input type="text" name="address" onChange={(e) => onInputChange(e)}/></label>
+            <input type="submit" className="counter"/>
         </form>
         );
     }
