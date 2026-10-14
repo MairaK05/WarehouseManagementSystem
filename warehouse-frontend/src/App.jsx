@@ -4,6 +4,8 @@ import Home from './Pages/Home'
 import Login from './Pages/Login'
 import PartsManager from './Pages/PartsManager'
 import DealershipManager from './Pages/DealershipManager'
+import UpdateVehicleForm from './Pages/UpdateVehicleForm'
+import UpdateEmployeeForm from './Pages/UpdateEmployeeForm'
 import Layout from './Pages/Layout'
 import './App.css'
 import EmployeeManager from './Pages/EmployeeManager'
@@ -20,6 +22,9 @@ function App() {
           <Route path={'vehicles'} Component={DealershipManager}/>
           <Route path={'employees'} Component={EmployeeManager}/>
           <Route path={'login'} Component={Login}/>
+          <Route path={'updateVehicle/:id'} Component={UpdateVehicleForm}/>
+          <Route path={'updateEmployee/:id'} Component={UpdateEmployeeForm}
+          element={<EmployeeManager />} />
         </Route>
       </Routes>
       </BrowserRouter>

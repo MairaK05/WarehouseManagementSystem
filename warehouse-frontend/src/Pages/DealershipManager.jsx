@@ -1,19 +1,9 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useReducer} from "react";
 import { dealershipApi } from "./services/DealershipService";
 import { listVehicles } from "./services/DealershipService";
+import { Link } from "react-router-dom";
 
-async function handleUpdate(e) { //Handle a new employee being submitted
-    return (
-        <>
-        <form id="form">
-            <label>Model<input type="text" name="vehicleModel" /></label>
-            <label>Brand<input type="text" name="vehicleBrand" /></label>
-        </form>
-        </>
-    );
-}
-
-async function handleDelete(e) { //Handle an existing employee being deleted
+async function handleDelete(e) { //Handle an existing vehicle being deleted
     console.log(e);
     await dealershipApi.delete(`/${e}`).then((response) => {
         console.log(response);
@@ -24,9 +14,7 @@ async function handleDelete(e) { //Handle an existing employee being deleted
     })
 }
 const DealershipManager = () => {
-
-    const [vehicles, setVehicles] = useState([])
-
+    const [vehicles, setVehicles] = useState([]);
     useEffect(() => {
         listVehicles().then((response) => {
             setVehicles(response.data);
@@ -58,7 +46,7 @@ const DealershipManager = () => {
                             <td>{vehiclePrice}</td>
                             <td>{vehicleMileage}</td>
                             <td>{isUsed}</td>
-                            <td><button onClick={() => handleDelete(vehicleId)}>Delete Vehicle</button><button onClick={() => handleUpdate(vehicleId)}>Update Vehicle</button></td>
+                            <td><button onClick={() => handleDelete(vehicleId)}>Delete Vehicle</button><Link to={`/updateVehicle/${vehicleId}`}>Update Vehicle</Link></td>
                         </tr>
                     )
                 })}

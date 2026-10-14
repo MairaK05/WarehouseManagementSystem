@@ -2,6 +2,20 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import { listEmployees } from "./services/EmployeeService";
 import { api } from "./services/EmployeeService";
+import { Link } from "react-router-dom";
+
+async function handleDelete(e) { //Handle an existing employee being deleted
+    console.log(e);
+    await api.delete(`/${e}`).then((response) => {
+        console.log(response);
+        return response;
+    })
+    .catch(error => {
+        console.error(error.response.data);
+    })
+}
+
+
 const EmployeeManager = () => {
     const [employees, setEmployees] = useState([])
 
@@ -36,7 +50,7 @@ const EmployeeManager = () => {
                             <td>{emailAddress}</td>
                             <td>{phoneNumber}</td>
                             <td>{address}</td>
-                            <td><button onClick={() => handleDelete(employeeID)}>Delete Employee</button><button onClick={() => handleUpdate(employeeID)}>Update Employee</button></td>
+                            <td><button onClick={() => handleDelete(employeeID)}>Delete Employee</button><Link to={`/updateEmployee/${employeeID}`}>Update Employee</Link></td>
                         </tr>
                     )
                 })}
